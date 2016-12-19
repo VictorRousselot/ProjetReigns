@@ -5,14 +5,27 @@
  */
 package projetreigns;
 
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author etudiant
  */
 public class Carte {
-    public String txt;
+    private String choix1;
+    private String choix2;
+    private String question;
+    private ImageIcon image;
+    private Periode periode;
+    private ArrayList<Pretendant> pretendants;
     
-    public Carte(String ch){
-        txt = ch;
+    public Carte(String choix1, String choix2, String question, ImageIcon image, Periode periode){
+        this.choix1 = choix1;
+        this.choix2 = choix2;
+        this.question = question;
+        this.image = image;
+        this.periode = periode;
+        pretendants = new ArrayList<Pretendant>();
     }
 }

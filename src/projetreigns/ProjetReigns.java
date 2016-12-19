@@ -19,18 +19,15 @@ public class ProjetReigns {
         FenetreJeu maFenetre = new FenetreJeu();
         
         PileCartes pile = new PileCartes();
-        Carte ct1 = new Carte("Bonjour");
-        Carte ct2 = new Carte("le");
-        Carte ct3 = new Carte("monde");
         
-        pile.empiler(ct1);
+        /*pile.empiler(ct1);
         pile.empiler(ct2);
-        pile.empiler(ct3);
+        pile.empiler(ct3);*/
         
-        pile.ajoutAleatoire(new Carte("test"));
+       // pile.ajoutAleatoire(new Carte("test"));
         
         while (!pile.estVide()){
-            System.out.println(pile.sommet().txt);
+       //     System.out.println(pile.sommet().txt);
             pile.depiler();
         }
     }
