@@ -3,8 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/etudiant/NetBeansProjects/ProjetReigns/src/projetreigns/ProjetReigns.java</file>
+            <file>file:/home/etudiant/NetBeansProjects/ProjetReigns/src/projetreigns/Pretendant.java</file>
+            <file>file:/home/etudiant/NetBeansProjects/ProjetReigns/src/projetreigns/PileVideException.java</file>
             <file>file:/home/etudiant/NetBeansProjects/ProjetReigns/src/projetreigns/FenetreJeu.java</file>
+            <file>file:/home/etudiant/NetBeansProjects/ProjetReigns/src/projetreigns/Periode.java</file>
+            <file>file:/home/etudiant/NetBeansProjects/ProjetReigns/src/projetreigns/Carte.java</file>
+            <file>file:/home/etudiant/NetBeansProjects/ProjetReigns/src/projetreigns/PileCartes.java</file>
+            <file>file:/home/etudiant/NetBeansProjects/ProjetReigns/src/projetreigns/Pile.java</file>
         </group>
     </open-files>
 </project-private>

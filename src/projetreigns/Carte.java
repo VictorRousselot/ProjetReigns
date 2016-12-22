@@ -16,16 +16,30 @@ public class Carte {
     private String choix1;
     private String choix2;
     private String question;
-    private ImageIcon image;
     private Periode periode;
+    private ImageIcon image;
     private ArrayList<Pretendant> pretendants;
     
-    public Carte(String choix1, String choix2, String question, ImageIcon image, Periode periode){
+    public Carte(String choix1, String choix2, String question, Periode periode, ImageIcon image){
         this.choix1 = choix1;
         this.choix2 = choix2;
         this.question = question;
-        this.image = image;
         this.periode = periode;
+        this.image = image;
         pretendants = new ArrayList<Pretendant>();
+    }
+    
+    public void addPretendant(Pretendant unPretendant){
+        pretendants.add(unPretendant);
+    }
+    
+    public void removePretendant(Pretendant unPretendant){
+        if(pretendants.contains(unPretendant)){
+            pretendants.remove(unPretendant);
+        }
+    }
+    
+    public int nbPretendants(){
+        return pretendants.size();
     }
 }
