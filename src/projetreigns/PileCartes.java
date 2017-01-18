@@ -43,9 +43,36 @@ public class PileCartes implements Pile {
         else lesCartes.remove(this.sommet());
     }
     
-    public void ajoutAleatoire(Carte uneCarte){
-        Random rand = new Random();
-        int nbAleatoire = rand.nextInt(lesCartes.size()+1)+0;
-        lesCartes.add(nbAleatoire, uneCarte);
+    public void ajoutAleatoire(Carte uneCarte, ArrayList<Periode> lesPeriodes){
+        int nbAleatoire = (int) Math.random();
+        int i = 0;
+        switch(nbAleatoire){
+            case 0: 
+                while(i<lesCartes.size() && lesCartes.get(i).getPeriode() != uneCarte.getPeriode()){
+                    i++;
+                }
+                if(i>=lesCartes.size()){
+                    i = 0;
+                    while(i<lesCartes.size() && lesPeriodes.indexOf(lesCartes.get(i).getPeriode()) != lesPeriodes.indexOf(uneCarte.getPeriode())+1){
+                        i++;
+                    }
+                    if(i>=lesCartes.size()){
+                        lesCartes.add(uneCarte);
+                    }
+                    else lesCartes.add(i+1, uneCarte);
+                }
+                else lesCartes.add(i, uneCarte);
+            break;
+            
+            case 1: 
+                while(i<lesCartes.size() && lesPeriodes.indexOf(lesCartes.get(i).getPeriode()) != lesPeriodes.indexOf(uneCarte.getPeriode())+1){
+                    i++;
+                }
+                if(i>=lesCartes.size()){
+                    lesCartes.add(uneCarte);
+                }
+                else lesCartes.add(i+1, uneCarte);
+            break; 
+        }
     }
 }

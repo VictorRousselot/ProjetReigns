@@ -16,6 +16,7 @@ public class Carte {
     private String choix1;
     private String choix2;
     private String question;
+    private String activite;
     private Periode periode;
     private ImageIcon image;
     private ArrayList<Pretendant> pretendants;
@@ -41,5 +42,9 @@ public class Carte {
     
     public int nbPretendants(){
         return pretendants.size();
+    }
+    
+    public Periode getPeriode(){
+        return periode;
     }
 }
