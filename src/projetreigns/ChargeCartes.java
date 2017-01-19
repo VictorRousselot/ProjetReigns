@@ -5,10 +5,29 @@
  */
 package projetreigns;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+
 /**
  *
  * @author etudiant
  */
 public class ChargeCartes {
-    
+    public static ArrayList<Carte> charger() throws FileNotFoundException, IOException{
+        File[] fichiers = null;
+        File dossierCarte = new File("mesCartes");
+        fichiers = dossierCarte.listFiles();
+        
+        for(int i=0;i<fichiers.length;i++){
+            BufferedReader bfr = new BufferedReader(new FileReader(fichiers[i]));
+            while(bfr.readLine() != null){
+                
+            }
+        }
+    }
 }
