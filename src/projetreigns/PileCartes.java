@@ -27,12 +27,15 @@ public class PileCartes implements Pile {
     
     @Override
     public void empiler(Carte uneCarte){
-        lesCartes.add(uneCarte);
+        lesCartes.add(0, uneCarte);
     }
     
     @Override
-    public Carte sommet(){
-        return lesCartes.get(lesCartes.size()-1);
+    public Carte sommet() throws PileVideException {
+        if(this.estVide()){
+            throw new PileVideException();
+        }
+        else return lesCartes.get(0);
     }
     
     @Override
@@ -40,11 +43,13 @@ public class PileCartes implements Pile {
         if(this.estVide()){
             throw new PileVideException();
         }
-        else lesCartes.remove(this.sommet());
+        else {
+            lesCartes.remove(this.sommet());
+        }
     }
     
-    public void ajoutAleatoire(Carte uneCarte, ArrayList<Periode> lesPeriodes){
-        int nbAleatoire = (int) Math.random();
+     public void ajoutAleatoire(Carte uneCarte, ArrayList<Periode> lesPeriodes){
+        int nbAleatoire = (int)(Math.random()*2);
         int i = 0;
         switch(nbAleatoire){
             case 0: 

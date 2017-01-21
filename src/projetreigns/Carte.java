@@ -47,4 +47,16 @@ public class Carte {
     public Periode getPeriode(){
         return periode;
     }
+    
+    public String getQuestion(){
+        return question;
+    }
+    
+    public String getChoix1(){
+        return choix1;
+    }
+    
+    public String getChoix2(){
+        return choix2;
+    }
 }

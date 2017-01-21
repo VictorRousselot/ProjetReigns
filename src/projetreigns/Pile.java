@@ -16,7 +16,7 @@ public interface Pile {
 
 	public boolean estVide();
 	public void empiler (Carte uneCarte);
-	public Carte sommet();
+	public Carte sommet() throws PileVideException;
 	public void depiler() throws PileVideException;
 
 }
