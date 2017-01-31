@@ -21,16 +21,15 @@ public class ChargeCartes {
     public static ArrayList<Carte> charger(ArrayList<Periode> lesPeriodes) throws FileNotFoundException, IOException{
         File[] fichiers = null;
         ArrayList<Carte> lesCartes = new ArrayList<Carte>();
-        File dossierCarte = new File("cartes");
+        File dossierCarte = new File("/cartes");
         fichiers = dossierCarte.listFiles();
         
         for(int i=0;i<fichiers.length;i++){
             BufferedReader bfr = new BufferedReader(new FileReader(fichiers[i]));
             int nbLigne = 1;
-            Carte newCarte;
+            Carte newCarte = null;
             String question = "", choix1 = "", choix2 = "";
             Periode per = lesPeriodes.get(0);
-            ImageIcon img = null;
             String chaine = null;
             
             while((chaine = bfr.readLine()) != null){
@@ -53,12 +52,69 @@ public class ChargeCartes {
                     }
                     break;
                     
-                    case 5: img = new ImageIcon(chaine);
+                    case 5:
+                    switch(chaine){
+                        case "1" :  newCarte = new CarteSortieBar(choix1, choix2, question, per);
+                            break;
+                    }
+                    break;
                 }
                 nbLigne++;
             }
-            newCarte = new Carte(choix1, choix2, question, per, img);
             lesCartes.add(newCarte);
+        }
+        return lesCartes;
+    }
+    
+    public ArrayList<Carte> chargerSpeciales(ArrayList<Periode> lesPeriodes) throws FileNotFoundException, IOException{
+        File[] pretendants = null;
+        File[] speciales = null;
+        ArrayList<Carte> lesCartes = new ArrayList<Carte>();
+        File dossierPret = new File("/pretendants");
+        pretendants = dossierPret.listFiles();
+        
+        for(int i=0;i<pretendants.length;i++){
+            File dossierSpec = new File(pretendants[i].getAbsolutePath());
+            speciales = dossierSpec.listFiles();
+            
+            for(int j=0;j<speciales.length;j++){
+                BufferedReader bfr = new BufferedReader(new FileReader(speciales[i]));
+                int nbLigne = 1;
+                Carte newCarte = null;
+                String question = "", choix1 = "", choix2 = "";
+                Periode per = lesPeriodes.get(0);
+                String chaine = null;
+
+                while((chaine = bfr.readLine()) != null){
+
+                    switch(nbLigne){
+                        case 1 : question = chaine;
+                        break;
+
+                        case 2: choix1 = chaine;
+                        break;
+
+                        case 3: choix2 = chaine;
+                        break;
+
+                        case 4:
+                        for(int k=0; j<lesPeriodes.size();j++){
+                            if(chaine.equals(lesPeriodes.get(j).getLibelle())){
+                                per = lesPeriodes.get(j);
+                            }
+                        }
+                        break;
+                    
+                        case 5:
+                            switch(chaine){
+                                case "1" :  newCarte = new CarteSortieBar(choix1, choix2, question, per);
+                                break;
+                            }
+                    }
+                }
+                nbLigne++;
+                lesCartes.add(newCarte);
+            }
         }
         return lesCartes;
     }

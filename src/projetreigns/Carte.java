@@ -12,21 +12,19 @@ import javax.swing.ImageIcon;
  *
  * @author etudiant
  */
-public class Carte {
+public abstract class Carte {
     private String choix1;
     private String choix2;
     private String question;
     private String activite;
     private Periode periode;
-    private ImageIcon image;
     private ArrayList<Pretendant> pretendants;
     
-    public Carte(String choix1, String choix2, String question, Periode periode, ImageIcon image){
+    public Carte(String choix1, String choix2, String question, Periode periode){
         this.choix1 = choix1;
         this.choix2 = choix2;
         this.question = question;
         this.periode = periode;
-        this.image = image;
         pretendants = new ArrayList<Pretendant>();
     }
     
@@ -59,4 +57,10 @@ public class Carte {
     public String getChoix2(){
         return choix2;
     }
+    
+    public ArrayList<Pretendant> getPretendants(){
+        return pretendants;
+    }
+    
+    public abstract void actionLancee(PileCartes list) throws PileVideException;
 }
