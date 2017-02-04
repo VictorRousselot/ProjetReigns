@@ -48,6 +48,10 @@ public class PileCartes implements Pile {
         }
     }
     
+    public boolean peutDepiler(){
+       return(lesCartes.size() <= 1); 
+    }
+    
      public void ajoutAleatoire(Carte uneCarte, ArrayList<Periode> lesPeriodes){
         int nbAleatoire = (int)(Math.random()*2);
         int i = 0;

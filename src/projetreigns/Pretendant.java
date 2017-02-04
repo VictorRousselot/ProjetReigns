@@ -6,6 +6,8 @@
 package projetreigns;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 /**
@@ -15,31 +17,48 @@ import javax.swing.ImageIcon;
 
 public abstract class Pretendant {    
     private String nom;
-    private String prenom;
     private int affinite;
+    private boolean peutSortir;
     private ImageIcon image;
-    private Periode periodeRV;
+    private ArrayList<Carte> speciales;
     
     private static final String defaultImg = "default.jpeg";
     
-    public Pretendant(String nom, String prenom, ImageIcon image, Periode periodeRV) {
+    public Pretendant(String nom, String img, ArrayList<Periode> lesPeriodes) throws IOException {
+        this.image = new ImageIcon("images/"+img);
         this.nom = nom;
-        this.prenom = prenom;
         this.affinite = 0;
-        this.periodeRV = periodeRV;
-        if(image == null){
-            this.image = new ImageIcon("images/"+defaultImg);
-        }
-        else this.image = image;
+        this.peutSortir = true;
+        speciales = ChargeCartes.chargerSpeciales(lesPeriodes, this.nom);
     }
     
-     public Pretendant(String nom, String prenom, ImageIcon image, Periode periodeRV, int affinite) {
-        this(nom, prenom, image, periodeRV);
+     public Pretendant(String nom, ArrayList<Periode> lesPeriodes, String path, int affinite) throws IOException {
+        this(nom, path, lesPeriodes);
         this.affinite = affinite;
     }
      
-     public ImageIcon getImage(){
+     public String getNom(){
+         return nom;
+     }
+     
+     public ImageIcon getImg(){
          return image;
+     }
+     
+     public void setAffinite(int af){
+         affinite = af;
+     }
+     
+     public int getAffinite(){
+         return affinite;
+     }
+     
+     public void setSortir(boolean b){
+         peutSortir = b;
+     }
+     
+     public boolean getSortir(){
+         return peutSortir;
      }
      
      public abstract void rendezVous(PileCartes laPile) throws PileVideException;

@@ -1,5 +1,6 @@
 Oooh ooh ! Je suis Pierrette, tu aimes les rats ?
 Ouais trop !
 Non je prefère les chihuahuas ;)
-matin
-piero.jpeg
+aprem
+carteSortieBar
+Pierette:30,50;

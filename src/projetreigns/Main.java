@@ -25,7 +25,14 @@ public class Main {
         lesPeriodes.add(new Periode("aprem", new ImageIcon("images/aprem.png")));
         lesPeriodes.add(new Periode("soir", new ImageIcon("images/soir.jpeg")));
         
-        allCartes = ChargeCartes.charger(lesPeriodes);
+        ArrayList<Pretendant> pretendants = new ArrayList<Pretendant>();
+        Pretendant p1 = new Dragueur("Pierette", "pierrette.jpeg", lesPeriodes);
+        Pretendant p2 = new Dragueur("Vilatte", "vilatte.png", lesPeriodes);
+        pretendants.add(p1);
+        pretendants.add(p2);
+        
+        allCartes = ChargeCartes.charger(lesPeriodes, pretendants);
+        
         
         for(int i=0;i<allCartes.size();i++){
             Carte carteSelec = allCartes.get(i);

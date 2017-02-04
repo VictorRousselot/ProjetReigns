@@ -1,5 +1,6 @@
-Test de la question 2
-Mon choix 1 de la carte 2
-Mon choix 2 de carte 2
-soir
-chat.jpeg
+Oooh ooh ! Je suis Villate, es-tu comme moi malada à mi-temps ?
+Ouais super boulot ;)
+Non je me prefère les chihuahuas ;)
+matin
+carteSortieBar
+Vilatte:40,-30;

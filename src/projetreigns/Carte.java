@@ -6,7 +6,7 @@
 package projetreigns;
 
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
+import java.util.HashMap;
 
 /**
  *
@@ -18,29 +18,31 @@ public abstract class Carte {
     private String question;
     private String activite;
     private Periode periode;
-    private ArrayList<Pretendant> pretendants;
+    private Periode periodeRV;
+    private HashMap<Pretendant, int[]> bonus;
     
     public Carte(String choix1, String choix2, String question, Periode periode){
+        this.bonus = new HashMap<Pretendant, int[]>();
         this.choix1 = choix1;
         this.choix2 = choix2;
         this.question = question;
         this.periode = periode;
-        pretendants = new ArrayList<Pretendant>();
     }
     
-    public void addPretendant(Pretendant unPretendant){
-        pretendants.add(unPretendant);
+    public void addPretendant(Pretendant unPretendant, int choix1, int choix2){
+        int tableau[] = {choix1, choix2};
+        bonus.put(unPretendant, tableau);
     }
     
     public void removePretendant(Pretendant unPretendant){
-        if(pretendants.contains(unPretendant)){
-            pretendants.remove(unPretendant);
+        if(bonus.containsKey(unPretendant)){
+            bonus.remove(unPretendant);
         }
     }
     
     public int nbPretendants(){
-        return pretendants.size();
-    }
+        return bonus.size();
+    }   
     
     public Periode getPeriode(){
         return periode;
@@ -58,9 +60,15 @@ public abstract class Carte {
         return choix2;
     }
     
-    public ArrayList<Pretendant> getPretendants(){
-        return pretendants;
+    public HashMap getBonus(){
+        return bonus;
     }
+    
+    public HashMap<Pretendant, int[]> getPretendants(){
+        return bonus;
+    }
+    
+    public abstract String getActivite();
     
     public abstract void actionLancee(PileCartes list) throws PileVideException;
 }

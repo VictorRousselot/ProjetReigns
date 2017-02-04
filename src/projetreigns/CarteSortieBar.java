@@ -11,7 +11,7 @@ package projetreigns;
  */
 public class CarteSortieBar extends Carte {
     
-    private static String activite = "";
+    private  String activite = "Au bar";
     
     public CarteSortieBar(String choix1, String choix2, String question, Periode periode){
         super(choix1, choix2, question, periode);
@@ -22,11 +22,7 @@ public class CarteSortieBar extends Carte {
         laPile.depiler();
     }
     
-    public static void setActivite(String pActivite){
-        activite = pActivite;
-    }
-    
-    public static String getActivite(){
+    public String getActivite(){
         return activite;
     }
 }

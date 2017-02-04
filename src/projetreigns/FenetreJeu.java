@@ -10,14 +10,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -27,7 +25,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 /**
  *
@@ -37,15 +34,15 @@ public class FenetreJeu extends JFrame {
     
     
     private JLabel jl_periode, jl_moment, jl_question, jl_choix1, jl_choix2, jl_profil;
+    private JButton bt_choix1, bt_choix2;
+    Carte selec;
     PileCartes cartes;
 
-    
     public FenetreJeu(PileCartes pile) throws PileVideException{
         cartes = pile;
         setTitle("Jeu de chat-ing");
         
-        Carte selec = cartes.sommet();
-        cartes.depiler();
+        selec = cartes.sommet();
         
         JPanel mainjp = new JPanel(new BorderLayout());
         setContentPane(mainjp);
@@ -60,7 +57,7 @@ public class FenetreJeu extends JFrame {
         refresh.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                jl_moment.setText("A la maison");
+              
             }
         });
         
@@ -88,8 +85,8 @@ public class FenetreJeu extends JFrame {
         JPanel jp_moment = new JPanel(new BorderLayout());
         jp_moment.setBackground(Color.cyan);
           
-        jl_moment = new JLabel("A la maison");
-        jl_moment.setFont(new Font("Serif", Font.BOLD, 15));
+        jl_moment = new JLabel(selec.getActivite());
+        jl_moment.setFont(new Font("Serif", Font.BOLD, 20));
         
         jl_moment.setHorizontalAlignment((int) CENTER_ALIGNMENT);
         jp_moment.add(jl_moment, BorderLayout.CENTER);
@@ -98,17 +95,22 @@ public class FenetreJeu extends JFrame {
         jp_choix1.setBackground(Color.GRAY);
         jp_choix1.setPreferredSize(new Dimension(400, 200));
         
-        JButton bt_choix1 = new JButton(selec.getChoix1());
+        bt_choix1 = new JButton(selec.getChoix1());
         jp_choix1.add(bt_choix1);
         
         bt_choix1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                for(Pretendant pret : selec.getPretendants()){
+                Set<Pretendant> pretendants = selec.getPretendants().keySet();
+                for(Pretendant p : pretendants){
+                    int[] bonus = selec.getPretendants().get(p);
+                    p.setAffinite(p.getAffinite()+bonus[0]);
                     try {
-                        pret.evolutionRelation(cartes);
+                        p.evolutionRelation(cartes);
+                        controleRV(selec);
+                        changeCartes();
                     } catch (PileVideException ex) {
-                        JOptionPane.showMessageDialog(null, "Erreur : La pile est vide", null, JOptionPane.ERROR_MESSAGE);
+                        Logger.getLogger(FenetreJeu.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -117,18 +119,42 @@ public class FenetreJeu extends JFrame {
         JPanel jp_img = new JPanel(new BorderLayout());
         
         if(selec.getPretendants().size() == 1){
-            Pretendant tmp = selec.getPretendants().get(0);
-            jl_profil = new JLabel(tmp.getImage());
-            jp_img.add(jl_profil, BorderLayout.CENTER);
+            Set<Pretendant> pretendants = selec.getPretendants().keySet();
+            for(Pretendant p : pretendants){
+                jl_profil = new JLabel(p.getImg());
+            }
         }
+        else {
+            jl_profil = new JLabel(new ImageIcon("images/default.jpeg"));
+        }
+        
+        jp_img.add(jl_profil, BorderLayout.CENTER);
         jp_img.setPreferredSize(new Dimension(200, 200));
         
         JPanel jp_choix2 = new JPanel(new BorderLayout());
         jp_choix2.setBackground(Color.GRAY);
         jp_choix2.setPreferredSize(new Dimension(400, 200));
         
-        JButton bt_choix2 = new JButton(selec.getChoix2());
+        bt_choix2 = new JButton(selec.getChoix2());
         jp_choix2.add(bt_choix2);
+        
+        bt_choix2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                Set<Pretendant> pretendants = selec.getPretendants().keySet();
+                for(Pretendant p : pretendants){
+                    int[] bonus = selec.getPretendants().get(p);
+                    p.setAffinite(p.getAffinite()+bonus[1]);
+                    try {
+                        p.evolutionRelation(cartes);
+                        controleRV(selec);
+                        changeCartes();
+                    } catch (PileVideException ex) {
+                        Logger.getLogger(FenetreJeu.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
         
         JPanel jp_question = new JPanel(new BorderLayout());
         jp_question.setBackground(Color.WHITE);
@@ -155,28 +181,27 @@ public class FenetreJeu extends JFrame {
         
         this.setVisible(true); 
     }
-    
-    public void setImg(ImageIcon img){
-        jl_profil = new JLabel(img);
+ 
+    public void changeCartes() throws PileVideException {
+        if (!cartes.peutDepiler()) {
+            cartes.depiler();
+            selec = cartes.sommet();
+            bt_choix1.setText(selec.getChoix1());
+            bt_choix2.setText(selec.getChoix2());
+            jl_question.setText(selec.getQuestion());
+            jl_moment.setText(selec.getActivite());
+            jl_periode.setIcon(selec.getPeriode().getImage());
+        } else {
+           JOptionPane.showMessageDialog(null, "Terminé, plus de cartes", null, JOptionPane.INFORMATION_MESSAGE);
+        }
     }
     
-    public void setQuestion(String q){
-        jl_question = new JLabel(q);
-    }
-    
-    public void setChoix1(String ch){
-        jl_choix1 = new JLabel(ch);
-    }
-    
-    public void setChoix2(String ch){
-        jl_choix2 = new JLabel(ch);
-    }
-    
-    public void setPeriode(Periode p){
-        jl_periode = new JLabel(p.getImage());
-    }
-    
-    public void setActivite(String ch){
-        jl_moment = new JLabel(ch);
+    public void controleRV(Carte laCarte) throws PileVideException{
+        Set<Pretendant> col = laCarte.getPretendants().keySet();
+        for(Pretendant p : col){
+            if(p.getAffinite() >= 100 && laCarte.getPretendants().size() == 1){
+                p.rendezVous(cartes);
+            }
+        }
     }
 }

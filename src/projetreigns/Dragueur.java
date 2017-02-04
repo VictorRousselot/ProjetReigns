@@ -5,6 +5,8 @@
  */
 package projetreigns;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 /**
@@ -12,8 +14,8 @@ import javax.swing.ImageIcon;
  * @author etudiant
  */
 public class Dragueur extends Pretendant {
-    public Dragueur(String nom, String prenom, ImageIcon image, Periode periodeRV) {
-        super(nom, prenom, image, periodeRV);
+    public Dragueur(String nom, String img, ArrayList<Periode> lesPeriodes) throws IOException {
+        super(nom, img, lesPeriodes);
     }
     
     @Override
