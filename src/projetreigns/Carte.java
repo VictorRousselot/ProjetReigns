@@ -5,7 +5,6 @@
  */
 package projetreigns;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -13,13 +12,13 @@ import java.util.HashMap;
  * @author etudiant
  */
 public abstract class Carte {
-    private String choix1;
-    private String choix2;
-    private String question;
-    private String activite;
-    private Periode periode;
-    private Periode periodeRV;
-    private HashMap<Pretendant, int[]> bonus;
+    protected String choix1;
+    protected String choix2;
+    protected String question;
+    protected String activite;
+    protected Periode periode;
+    protected Periode periodeRV;
+    protected HashMap<Pretendant, int[]> bonus;
     
     public Carte(String choix1, String choix2, String question, Periode periode){
         this.bonus = new HashMap<Pretendant, int[]>();

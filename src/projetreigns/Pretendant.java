@@ -5,7 +5,6 @@
  */
 package projetreigns;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
@@ -16,25 +15,24 @@ import javax.swing.ImageIcon;
  */
 
 public abstract class Pretendant {    
-    private String nom;
-    private int affinite;
-    private boolean peutSortir;
-    private ImageIcon image;
-    private ArrayList<Carte> speciales;
+    protected String nom;
+    protected int affinite;
+    protected boolean peutSortir;
+    protected ImageIcon image;
+    protected ArrayList<Carte> speciales;
     
     private static final String defaultImg = "default.jpeg";
     
     public Pretendant(String nom, String img, ArrayList<Periode> lesPeriodes) throws IOException {
-        this.image = new ImageIcon("images/"+img);
+        if(img == null){
+            this.image = new ImageIcon("images/"+defaultImg);
+        }
+        else this.image = new ImageIcon("images/"+img);
+        
         this.nom = nom;
         this.affinite = 0;
         this.peutSortir = true;
         speciales = ChargeCartes.chargerSpeciales(lesPeriodes, this.nom);
-    }
-    
-     public Pretendant(String nom, ArrayList<Periode> lesPeriodes, String path, int affinite) throws IOException {
-        this(nom, path, lesPeriodes);
-        this.affinite = affinite;
     }
      
      public String getNom(){
@@ -63,5 +61,5 @@ public abstract class Pretendant {
      
      public abstract void rendezVous(PileCartes laPile) throws PileVideException;
      
-     public abstract void evolutionRelation(PileCartes laPile) throws PileVideException;
+     public abstract void evolutionRelation(PileCartes laPile, Periode pActuelle) throws PileVideException;
 }

@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -71,7 +70,6 @@ public class ChargeCartes {
                                 String nom = prets[j].substring(0, prets[j].indexOf(":"));
                                 if (p.getNom().equals(nom)) {
                                     String bonMal = prets[j].substring(prets[j].indexOf(":") + 1, prets[j].length());
-                                    System.out.print("test");
                                     String[] bonus = bonMal.split(",");
 
                                     newCarte.addPretendant(p, Integer.parseInt(bonus[0]), Integer.parseInt(bonus[1]));

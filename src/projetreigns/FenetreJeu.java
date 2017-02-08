@@ -57,7 +57,13 @@ public class FenetreJeu extends JFrame {
         refresh.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-              
+                try {
+                    Main.refreshFenetre();
+                    dispose();
+                } catch (PileVideException ex) {
+                    Logger.getLogger(FenetreJeu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
             }
         });
         
@@ -76,17 +82,16 @@ public class FenetreJeu extends JFrame {
         jp_haut.setBorder(BorderFactory.createLineBorder(Color.black, 3));
         
         JPanel jp_periode = new JPanel();
-       // jp_periode.setBackground(Color.BLACK);
         
         jl_periode = new JLabel(selec.getPeriode().getImage());
         jp_periode.add(jl_periode, BorderLayout.CENTER);
         jp_periode.setPreferredSize(new Dimension(500, 100));
         
         JPanel jp_moment = new JPanel(new BorderLayout());
-        jp_moment.setBackground(Color.cyan);
+        jp_moment.setBackground(new Color(77, 182, 227));
           
         jl_moment = new JLabel(selec.getActivite());
-        jl_moment.setFont(new Font("Serif", Font.BOLD, 20));
+        jl_moment.setFont(new Font("Arial", Font.BOLD, 20));
         
         jl_moment.setHorizontalAlignment((int) CENTER_ALIGNMENT);
         jp_moment.add(jl_moment, BorderLayout.CENTER);
@@ -96,6 +101,7 @@ public class FenetreJeu extends JFrame {
         jp_choix1.setPreferredSize(new Dimension(400, 200));
         
         bt_choix1 = new JButton(selec.getChoix1());
+        bt_choix1.setFont(new Font("Arial", Font.CENTER_BASELINE, 20));
         jp_choix1.add(bt_choix1);
         
         bt_choix1.addActionListener(new ActionListener() {
@@ -106,8 +112,8 @@ public class FenetreJeu extends JFrame {
                     int[] bonus = selec.getPretendants().get(p);
                     p.setAffinite(p.getAffinite()+bonus[0]);
                     try {
-                        p.evolutionRelation(cartes);
-                        controleRV(selec);
+                        selec.actionLancee(cartes);
+                        p.evolutionRelation(cartes, selec.getPeriode());
                         changeCartes();
                     } catch (PileVideException ex) {
                         Logger.getLogger(FenetreJeu.class.getName()).log(Level.SEVERE, null, ex);
@@ -136,6 +142,7 @@ public class FenetreJeu extends JFrame {
         jp_choix2.setPreferredSize(new Dimension(400, 200));
         
         bt_choix2 = new JButton(selec.getChoix2());
+        bt_choix2.setFont(new Font("Arial", Font.BOLD, 20));
         jp_choix2.add(bt_choix2);
         
         bt_choix2.addActionListener(new ActionListener() {
@@ -146,8 +153,8 @@ public class FenetreJeu extends JFrame {
                     int[] bonus = selec.getPretendants().get(p);
                     p.setAffinite(p.getAffinite()+bonus[1]);
                     try {
-                        p.evolutionRelation(cartes);
-                        controleRV(selec);
+                        selec.actionLancee(cartes);
+                        p.evolutionRelation(cartes, selec.getPeriode());
                         changeCartes();
                     } catch (PileVideException ex) {
                         Logger.getLogger(FenetreJeu.class.getName()).log(Level.SEVERE, null, ex);
@@ -161,7 +168,7 @@ public class FenetreJeu extends JFrame {
         jp_question.setPreferredSize(new Dimension(1000, 100));
         
         jl_question = new JLabel(selec.getQuestion());
-        jl_question.setFont(new Font("Serif", Font.BOLD, 18));
+        jl_question.setFont(new Font("Arial", Font.BOLD, 20));
         
         jl_question.setHorizontalAlignment((int) CENTER_ALIGNMENT);
         jp_question.add(jl_question, BorderLayout.CENTER);
@@ -183,7 +190,7 @@ public class FenetreJeu extends JFrame {
     }
  
     public void changeCartes() throws PileVideException {
-        if (!cartes.peutDepiler()) {
+        if (cartes.peutDepiler()) {
             cartes.depiler();
             selec = cartes.sommet();
             bt_choix1.setText(selec.getChoix1());
@@ -191,17 +198,19 @@ public class FenetreJeu extends JFrame {
             jl_question.setText(selec.getQuestion());
             jl_moment.setText(selec.getActivite());
             jl_periode.setIcon(selec.getPeriode().getImage());
+            
+            if(selec.getPretendants().size() > 1){
+                jl_profil.setIcon(new ImageIcon("images/default.jpeg"));
+            }
+            else {
+                Set<Pretendant> pr = selec.getPretendants().keySet();
+                for(Pretendant p : pr){
+                    jl_profil.setIcon(p.getImg());
+                }
+            }
+                
         } else {
            JOptionPane.showMessageDialog(null, "Terminé, plus de cartes", null, JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-    
-    public void controleRV(Carte laCarte) throws PileVideException{
-        Set<Pretendant> col = laCarte.getPretendants().keySet();
-        for(Pretendant p : col){
-            if(p.getAffinite() >= 100 && laCarte.getPretendants().size() == 1){
-                p.rendezVous(cartes);
-            }
         }
     }
 }

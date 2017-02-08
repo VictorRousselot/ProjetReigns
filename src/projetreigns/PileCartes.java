@@ -6,7 +6,6 @@
 package projetreigns;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  *
@@ -49,7 +48,7 @@ public class PileCartes implements Pile {
     }
     
     public boolean peutDepiler(){
-       return(lesCartes.size() <= 1); 
+       return(lesCartes.size() >= 2); 
     }
     
      public void ajoutAleatoire(Carte uneCarte, ArrayList<Periode> lesPeriodes){
