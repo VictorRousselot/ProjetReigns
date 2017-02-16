@@ -17,7 +17,8 @@ public class Main {
     
     private static ArrayList<Carte> allCartes;
     private static ArrayList<Periode> lesPeriodes;
-
+    private static FenetreJeu maFenetre; 
+    
     public static void main(String args[]) throws IOException, PileVideException {
         allCartes = new ArrayList<Carte>();
         lesPeriodes = new ArrayList<Periode>();;
@@ -26,7 +27,7 @@ public class Main {
 
         lesPeriodes.add(new Periode("matin", new ImageIcon("images/matin.png")));
         lesPeriodes.add(new Periode("aprem", new ImageIcon("images/aprem.png")));
-        lesPeriodes.add(new Periode("soir", new ImageIcon("images/soir.jpeg")));
+        lesPeriodes.add(new Periode("soir", new ImageIcon("images/soir.png")));
 
         ArrayList<Pretendant> pretendants = new ArrayList<Pretendant>();
         Pretendant p1 = new Dragueur("Pierette", "chihuahua.jpg", lesPeriodes);
@@ -41,7 +42,7 @@ public class Main {
             maPile.ajoutAleatoire(carteSelec, lesPeriodes);
         }
 
-        FenetreJeu maFenetre = new FenetreJeu(maPile);
+        maFenetre = new FenetreJeu(maPile);
     }
 
     public static void refreshFenetre() throws PileVideException {
@@ -51,6 +52,8 @@ public class Main {
             newPile.ajoutAleatoire(carteSelec, lesPeriodes);
         }
         
-        FenetreJeu newFenetre = new FenetreJeu(newPile);
+        
+        maFenetre.cartes = newPile;
+        maFenetre.changeCartes(newPile.sommet());
     }
 }

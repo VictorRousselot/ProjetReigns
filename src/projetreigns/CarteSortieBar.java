@@ -19,7 +19,7 @@ public class CarteSortieBar extends Carte {
     
     @Override
     public void actionLancee(PileCartes laPile) throws PileVideException{
-        laPile.depiler();
+       // laPile.depiler();
     }
     
     public String getActivite(){

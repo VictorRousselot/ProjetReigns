@@ -22,14 +22,14 @@ public class Dragueur extends Pretendant {
     @Override
     public void rendezVous(PileCartes laPile) throws PileVideException {
         JOptionPane.showMessageDialog(null, "Génial ! Vous pouvez sortir avec "+nom+" !", null, JOptionPane.OK_OPTION);
-       /* while(laPile.peutDepiler()){
+        while(laPile.peutDepiler()){
             laPile.depiler();
-        }*/
+        }
     }
     
     @Override
     public void evolutionRelation(PileCartes laPile, Periode pActuelle) throws PileVideException{
-        if(affinite > 50){
+        /*if(affinite > 50){
             while(laPile.peutDepiler()){
                 int nb = 0;
                 Set<Pretendant> pret = laPile.sommet().getPretendants().keySet();
@@ -47,6 +47,6 @@ public class Dragueur extends Pretendant {
         
         if(affinite == 100 && pActuelle.getLibelle().equals("soir") && laPile.sommet().getPretendants().size() == 1){
             rendezVous(laPile);
-        }
+        }*/
     }
 }
