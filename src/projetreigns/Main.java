@@ -8,6 +8,8 @@ package projetreigns;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 
 /**
@@ -20,7 +22,7 @@ public class Main {
     private static ArrayList<Periode> lesPeriodes;
     private static FenetreJeu maFenetre; 
     
-    public static void main(String args[]) throws IOException, PileVideException {
+    public static void main(String args[]) throws IOException, PileVideException, UnsupportedAudioFileException, LineUnavailableException {
         allCartes = new ArrayList<Carte>();
         lesPeriodes = new ArrayList<Periode>();;
 

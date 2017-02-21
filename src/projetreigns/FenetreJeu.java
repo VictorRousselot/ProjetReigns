@@ -16,9 +16,18 @@ import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,6 +36,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
 /**
  *
@@ -36,13 +47,14 @@ public class FenetreJeu extends JFrame {
 
     private JLabel jl_periode, jl_moment, jl_question, jl_choix1, jl_choix2, jl_profil;
     private JButton bt_choix1, bt_choix2;
+    private Player player;
     private JProgressBar maBarre;
     private Carte selec;
     public PileCartes cartes;
 
-    public FenetreJeu(PileCartes pile) throws PileVideException {
+    public FenetreJeu(PileCartes pile) throws PileVideException, UnsupportedAudioFileException, IOException, LineUnavailableException {
         cartes = pile;
-        setTitle("Jeu de chat-ing");
+        setTitle("Quel animal vas-tu ramener du refuge ?");
 
         selec = cartes.sommet();
 
@@ -55,6 +67,8 @@ public class FenetreJeu extends JFrame {
         menu.add(refresh);
         MenuItem quit = new MenuItem("Quitter");
         menu.add(quit);
+        MenuItem closeMusic = new MenuItem("Couper le son");
+        menu.add(closeMusic);
 
         refresh.addActionListener(new ActionListener() {
             @Override
@@ -71,6 +85,14 @@ public class FenetreJeu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 dispose();
+                player.close();
+            }
+        });
+        
+        closeMusic.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                player.close();
             }
         });
 
@@ -167,9 +189,21 @@ public class FenetreJeu extends JFrame {
         this.pack();
         this.setLocationRelativeTo(null);
         
-        changeCartes(selec);
-
+        String mp3 = "music.mp3";
+        File music = new File(mp3);
+        FileInputStream fis = new FileInputStream(music);
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        
         this.setVisible(true);
+        changeCartes(selec);
+        
+        try {
+            player = new Player(bis);
+            player.play();
+        }
+        catch(JavaLayerException e){
+            
+        }
     }
 
     public void changeCartes(Carte maCarte) throws PileVideException {
@@ -221,7 +255,10 @@ public class FenetreJeu extends JFrame {
                     if(option == JOptionPane.OK_OPTION){
                         Main.refreshFenetre();
                     }
-                    else dispose();
+                    else {
+                        dispose();
+                        player.close();
+                    }
                 }
             } catch (PileVideException ex) {
                 Logger.getLogger(FenetreJeu.class.getName()).log(Level.SEVERE, null, ex);
