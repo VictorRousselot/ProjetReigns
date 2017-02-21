@@ -7,6 +7,7 @@ package projetreigns;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
 import javax.swing.ImageIcon;
 
 /**
@@ -50,9 +51,13 @@ public class Main {
         for (int i = 0; i < allCartes.size(); i++) {
             Carte carteSelec = allCartes.get(i);
             newPile.ajoutAleatoire(carteSelec, lesPeriodes);
-        }
-        
-        
+            
+            Set<Pretendant> pretendants = allCartes.get(i).getPretendants().keySet();
+            for (Pretendant p : pretendants) {
+                p.setAffinite(0);
+                p.setSortir(true);
+            }
+        } 
         maFenetre.cartes = newPile;
         maFenetre.changeCartes(newPile.sommet());
     }

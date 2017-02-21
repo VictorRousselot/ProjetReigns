@@ -26,7 +26,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.JProgressBar;
 
 /**
  *
@@ -36,6 +36,7 @@ public class FenetreJeu extends JFrame {
 
     private JLabel jl_periode, jl_moment, jl_question, jl_choix1, jl_choix2, jl_profil;
     private JButton bt_choix1, bt_choix2;
+    private JProgressBar maBarre;
     private Carte selec;
     public PileCartes cartes;
 
@@ -77,14 +78,14 @@ public class FenetreJeu extends JFrame {
         this.setMenuBar(mb);
 
         JPanel jp_haut = new JPanel(new GridLayout(1, 2));
-        jp_haut.setPreferredSize(new Dimension(1000, 120));
+        jp_haut.setPreferredSize(new Dimension(1500, 120));
         jp_haut.setBorder(BorderFactory.createLineBorder(Color.black, 3));
 
         JPanel jp_periode = new JPanel();
 
         jl_periode = new JLabel();
         jp_periode.add(jl_periode, BorderLayout.CENTER);
-        jp_periode.setPreferredSize(new Dimension(500, 120));
+        jp_periode.setPreferredSize(new Dimension(750, 120));
 
         JPanel jp_moment = new JPanel(new BorderLayout());
         jp_moment.setBackground(new Color(77, 182, 227));
@@ -96,11 +97,11 @@ public class FenetreJeu extends JFrame {
         jp_moment.add(jl_moment, BorderLayout.CENTER);
 
         JPanel jp_choix1 = new JPanel(new BorderLayout());
-        jp_choix1.setPreferredSize(new Dimension(400, 200));
+        jp_choix1.setPreferredSize(new Dimension(600, 300));
         jp_choix1.setBackground(Color.GRAY);
 
         bt_choix1 = new JButton();
-        bt_choix1.setFont(new Font("Arial", Font.CENTER_BASELINE, 20));
+        bt_choix1.setFont(new Font("Arial", Font.BOLD, 20));
         jp_choix1.add(bt_choix1);
 
         bt_choix1.addActionListener(new ActionListener() {
@@ -111,14 +112,26 @@ public class FenetreJeu extends JFrame {
         });
 
         JPanel jp_img = new JPanel(new BorderLayout());
-        jp_img.setPreferredSize(new Dimension(200, 200));
+        jp_img.setPreferredSize(new Dimension(300, 280));
 
        jl_profil = new JLabel();
+       jl_profil.setHorizontalAlignment(JLabel.CENTER);
        jp_img.add(jl_profil, BorderLayout.CENTER);
+       
+       
+       JPanel jp_barre = new JPanel(new BorderLayout());
+       maBarre = new JProgressBar(0, 200);
+       //maBarre.setVisible(false);
+       jp_barre.add(maBarre, BorderLayout.CENTER);
+       jp_barre.setPreferredSize(new Dimension(300, 20));
+       
+       JPanel jp_centre = new JPanel(new BorderLayout());
+       jp_centre.add(jp_img, BorderLayout.CENTER);
+       jp_centre.add(jp_barre, BorderLayout.PAGE_END);
 
         JPanel jp_choix2 = new JPanel(new BorderLayout());
         jp_choix2.setBackground(Color.GRAY);
-        jp_choix2.setPreferredSize(new Dimension(400, 200));
+        jp_choix2.setPreferredSize(new Dimension(600, 300));
 
         bt_choix2 = new JButton();
         bt_choix2.setFont(new Font("Arial", Font.BOLD, 20));
@@ -133,7 +146,7 @@ public class FenetreJeu extends JFrame {
 
         JPanel jp_question = new JPanel(new BorderLayout());
         jp_question.setBackground(Color.WHITE);
-        jp_question.setPreferredSize(new Dimension(1000, 100));
+        jp_question.setPreferredSize(new Dimension(1500, 100));
 
         jl_question = new JLabel();
         jl_question.setFont(new Font("Arial", Font.BOLD, 20));
@@ -146,7 +159,7 @@ public class FenetreJeu extends JFrame {
 
         mainjp.add(jp_haut, BorderLayout.PAGE_START);
         mainjp.add(jp_choix1, BorderLayout.LINE_START);
-        mainjp.add(jp_img, BorderLayout.CENTER);
+        mainjp.add(jp_centre, BorderLayout.CENTER);
         mainjp.add(jp_choix2, BorderLayout.LINE_END);
         mainjp.add(jp_question, BorderLayout.PAGE_END);
 
@@ -164,25 +177,28 @@ public class FenetreJeu extends JFrame {
 
         String ch = maCarte.getChoix2();
         int i =0;
-        while((ch.charAt(i) != ' ')||(i<25)||(i>30)){
+        /*while((ch.charAt(i) != ' ')||(i<25)||(i>30)){
             i++;
         } 
         if(ch.charAt(i) == ' '){
             ch = ch.substring(0, i)+"<br />"+ch.substring(i);
-        }
-        bt_choix2.setText("<html>"+ch+"</html>b");
+        }*/
+        bt_choix2.setText(maCarte.getChoix2());
         jl_question.setText(maCarte.getQuestion());
         jl_moment.setText(maCarte.getActivite());
         jl_periode.setIcon(maCarte.getPeriode().getImage());
 
         if (maCarte.getPretendants().size() > 1) {
             jl_profil.setIcon(new ImageIcon("images/default.jpeg"));
+            maBarre.setVisible(false);
         } else {
             Set<Pretendant> pr = maCarte.getPretendants().keySet();
             for (Pretendant p : pr) {
-                Image scaledImage = p.getImg().getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+                Image scaledImage = p.getImg().getImage().getScaledInstance(300, 280, Image.SCALE_SMOOTH);
                 ImageIcon img = new ImageIcon(scaledImage);
                 jl_profil.setIcon(img);
+                maBarre.setValue(p.getAffinite()+100);
+                maBarre.setVisible(true);
             }
         }
     }
@@ -199,7 +215,13 @@ public class FenetreJeu extends JFrame {
                     cartes.depiler();
                     changeCartes(cartes.sommet());
                 } else {
-                    JOptionPane.showMessageDialog(null, "Terminé, plus de cartes", null, JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane jop = new JOptionPane();
+                    int option = jop.showConfirmDialog(null, "Terminé, plus de cartes. Recommencer ?", null, JOptionPane.INFORMATION_MESSAGE);
+                    
+                    if(option == JOptionPane.OK_OPTION){
+                        Main.refreshFenetre();
+                    }
+                    else dispose();
                 }
             } catch (PileVideException ex) {
                 Logger.getLogger(FenetreJeu.class.getName()).log(Level.SEVERE, null, ex);
